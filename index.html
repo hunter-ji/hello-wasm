@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用Rust和WebAssembly整花活儿</title>
+</head>
+
+<body>
+    Hello, World!
+
+    <div id="message"></div>
+</body>
+
+<script type="module">
+    import init, { add, update_message, print_values, print_js_value, only_return_error_when_result, return_all_when_result, print_uint8_array, return_time } from './pkg/hello_wasm.js';
+
+    const run = async () => {
+        await init();
+        const result = add(1, 2);
+        console.log(`the result from rust is: ${result}`);
+
+        update_message('#message', '<h1>Hello, Rust!</h1>');
+
+        const jsNumber = 10;
+        const jsBoolean = true;
+
+        const jsUint8Array = new Uint8Array(3);
+        jsUint8Array[0] = 1;
+        jsUint8Array[1] = 2;
+        jsUint8Array[2] = 3;
+
+        const jsNumberArray = [30, 40, 50];
+
+        print_values(jsNumber, jsBoolean, jsUint8Array, jsNumberArray);
+
+        print_js_value(jsNumber);
+        print_js_value(jsBoolean);
+        print_js_value(jsUint8Array);
+        print_js_value(jsNumberArray);
+
+        try {
+            only_return_error_when_result(1);
+            console.log('1 is ok');
+        } catch (error) {
+            console.log('An error is reported when the input parameter is 1: ', error);
+        }
+
+        try {
+            only_return_error_when_result(100);
+            console.log('100 is ok');
+        } catch (error) {
+            console.log('An error is reported when the input parameter is 100: ', error);
+        }
+
+        try {
+            const res = return_all_when_result(1);
+            console.log(`get ${res}`);
+        } catch (error) {
+            console.log('An error is reported when the input parameter is 1: ', error);
+        }
+
+        try {
+            const res = return_all_when_result(100);
+            console.log(`get ${res}`);
+        } catch (error) {
+            console.log('An error is reported when the input parameter is 100: ', error);
+        }
+
+        console.log('print_uint8_array() : ', print_uint8_array(jsUint8Array));
+
+        console.log('current time: ', return_time());
+    }
+
+    run();
+</script>
+
+</html>
