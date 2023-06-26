@@ -6,3 +6,4 @@
 # 系列文章
 * [使用Rust和WebAssembly整花活儿(一)——快速开始](https://github.com/Kuari/Blog/issues/72)
 * [使用Rust和WebAssembly整花活儿(二)——DOM和类型转换](https://github.com/Kuari/Blog/issues/73)
+* [使用Rust和WebAssembly整花活儿(三)——Rust与JS交互](https://github.com/Kuari/Blog/issues/74)

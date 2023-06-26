@@ -7,6 +7,48 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 
 #[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(message: &str);
+
+    #[wasm_bindgen(js_namespace = console, js_name = log)]
+    fn log_str(message: &str);
+}
+
+#[wasm_bindgen(raw_module = "../index.js")]
+extern "C" {
+    fn addIt(m: i32, n: i32) -> i32;
+}
+
+#[wasm_bindgen]
+pub fn call_js_func() -> i32 {
+    // log_str("hello, javascript!")
+    addIt(1, 2)
+}
+
+#[wasm_bindgen]
+pub struct User {
+    name: String,
+    age: u32
+}
+
+#[wasm_bindgen]
+impl User {
+    #[wasm_bindgen(constructor)]
+    pub fn new(name: String, age: u32) -> User {
+        User { name, age }
+    }
+
+    pub fn print_user(&self) {
+        log(format!("name is : {}, age is : {}", self.name, self.age).as_str());
+    }
+
+    pub fn set_age(&mut self, age: u32) {
+        self.age = age;
+    }
+}
+
+#[wasm_bindgen]
 pub fn update_message(selector: &str, message: &str) {
     let window = web_sys::window().expect("Failed to load window");
     let document = window.document().expect("Failed to load document");

@@ -14,7 +14,11 @@
 </body>
 
 <script type="module">
-    import init, { add, update_message, print_values, print_js_value, only_return_error_when_result, return_all_when_result, print_uint8_array, return_time } from './pkg/hello_wasm.js';
+    function addIt2(m, n) {
+        return m + n;
+    };
+
+    import init, { add, update_message, print_values, print_js_value, only_return_error_when_result, return_all_when_result, print_uint8_array, return_time, call_js_func, User } from './pkg/hello_wasm.js';
 
     const run = async () => {
         await init();
@@ -71,6 +75,14 @@
         console.log('print_uint8_array() : ', print_uint8_array(jsUint8Array));
 
         console.log('current time: ', return_time());
+
+        console.log('call_js_func: ', call_js_func());
+        // call_js_func();
+
+        const user = new User('kuari', 20);
+        console.log('user: ', user);
+        user.set_age(21);
+        user.print_user();
     }
 
     run();
